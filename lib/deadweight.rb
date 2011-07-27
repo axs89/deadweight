@@ -39,9 +39,13 @@ class Deadweight
 
       next if stripped_selector.empty?
 
-      if doc.search(stripped_selector).any?
-        log.puts("  #{selector.green}")
-        selector
+      begin
+        if doc.search(stripped_selector).any?
+          log.puts("  #{selector.green}")
+          selector
+        end
+      rescue
+        log.puts(" BAD SELECTOR: #{selector}".red)
       end
     end
   end
