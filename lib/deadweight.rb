@@ -26,6 +26,7 @@ class Deadweight
     @ignore_selectors = []
     @mechanize = false
     @log_file = STDERR
+    @invalid_selectors = []
     yield self and run if block_given?
   end
 
@@ -38,6 +39,7 @@ class Deadweight
       stripped_selector = strip(selector)
 
       next if stripped_selector.empty?
+      next if @invalid_selectors.include?(selector)
 
       begin
         if doc.search(stripped_selector).any?
@@ -46,8 +48,7 @@ class Deadweight
         end
       rescue
         log.puts(" BAD SELECTOR (ignoring): #{selector}".red)
-        @ignore_selectors << selector
-        next
+        @invalid_selectors << selector
       end
     end
   end
