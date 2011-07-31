@@ -45,7 +45,9 @@ class Deadweight
           selector
         end
       rescue
-        log.puts(" BAD SELECTOR: #{selector}".red)
+        log.puts(" BAD SELECTOR (ignoring): #{selector}".red)
+        @ignore_selectors << selector
+        next
       end
     end
   end
