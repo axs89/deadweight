@@ -15,7 +15,12 @@ if ENV['DEADWEIGHT'] == 'true'
             dw = Deadweight.new
 
             dw.root        = root + 'public'
-            dw.stylesheets = Dir.chdir(dw.root) { Dir.glob("stylesheets/*.css") }
+            unless ENV['STYLESHEETS']
+              dw.stylesheets = Dir.chdir(dw.root) { Dir.glob("stylesheets/*.css") }
+            else
+              dw.stylesheets = ENV['STYLESHEETS'].split(",").collect {|fname| File.join(dw.root, 'stylesheets', fname}
+            end
+
             dw.log_file    = original_stderr
 
             dw.reset!
