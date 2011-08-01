@@ -27,7 +27,11 @@ if ENV['DEADWEIGHT'] == 'true'
 
             at_exit do
               dw.report
-              dw.dump(original_stdout)
+              if ENV['DW_OUTPUT']
+                File.open(ENV['DW_OUTPUT'], 'w') {|f| dw.dump(f)}
+              else
+                dw.dump(original_stdout)
+              end
             end
 
             app.middleware.insert(0, Deadweight::Rack::CapturingMiddleware, dw)
